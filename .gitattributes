@@ -1,0 +1,11 @@
+# Tandai file platform bawaan agar diabaikan oleh GitHub Linguist
+windows/** linguist-vendored
+linux/** linguist-vendored
+macos/** linguist-vendored
+ios/** linguist-vendored
+android/** linguist-vendored
+web/** linguist-vendored
+
+# Atau deteksi sebagai dokumentasi/generated
+*.cmake linguist-documentation
+CMakeLists.txt linguist-documentation
