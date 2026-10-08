@@ -1,0 +1,7 @@
+# Abaikan folder native runner bawaan Flutter agar tidak dihitung di statistik bahasa GitHub
+windows/* linguist-vendored
+linux/* linguist-vendored
+macos/* linguist-vendored
+ios/* linguist-vendored
+android/* linguist-vendored
+web/* linguist-vendored
