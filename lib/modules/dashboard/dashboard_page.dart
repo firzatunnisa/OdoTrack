@@ -4,6 +4,7 @@ import 'widgets/active_vehicle_card.dart';
 import 'widgets/quick_action_button.dart';
 import 'widgets/reminder_summary_card.dart';
 import 'reminder_page.dart';
+import 'nearby_locations_page.dart';
 import '../vehicle/vehicle_list_page.dart';
 import '../vehicle/add_vehicle_page.dart';
 import '../service/service_history_page.dart';
@@ -400,9 +401,74 @@ class _DashboardPageState extends State<DashboardPage> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            // 4. Cari Bengkel & Samsat Terdekat (FR-11)
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const NearbyLocationsPage()),
+                );
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF0F172A), Color(0xFF1E3A8A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1E3A8A).withValues(alpha: 0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.near_me, color: Colors.amber, size: 24),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Cari Bengkel & Samsat Terdekat',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Temukan bengkel resmi AHASS/Yamaha & Samsat via Maps',
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.8),
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 16),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
 
-            // 4. Quick Tips / Info Card
+            // 5. Quick Tips / Info Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(

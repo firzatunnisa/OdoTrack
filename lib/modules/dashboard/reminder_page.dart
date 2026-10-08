@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/reminder_model.dart';
 import 'widgets/reminder_item_card.dart';
 import 'widgets/add_reminder_sheet.dart';
+import 'nearby_locations_page.dart';
 
 class ReminderPage extends StatefulWidget {
   const ReminderPage({super.key});
@@ -185,6 +186,16 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.near_me_outlined),
+            tooltip: 'Cari Bengkel & Samsat',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NearbyLocationsPage()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.add_circle_outline),
             tooltip: 'Tambah Pengingat',
