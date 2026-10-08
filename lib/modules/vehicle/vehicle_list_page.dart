@@ -25,7 +25,7 @@ class VehicleListPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Bagian Loudysa (ui-kendaraan)\nHalaman daftar kendaraan.',
+                'Daftar Sepeda Motor Anda\n(Akan terhubung setelah modul kendaraan digabungkan)',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),

@@ -25,7 +25,7 @@ class ServiceHistoryPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Bagian Firza (ui-servis)\nHalaman riwayat servis & nota.',
+                'Daftar Riwayat Servis & Nota Digital\n(Akan terhubung setelah modul servis digabungkan)',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),

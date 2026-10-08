@@ -302,7 +302,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 Expanded(
                   child: QuickActionButton(
                     icon: Icons.two_wheeler,
-                    label: 'Motor Saya\n(Loudysa)',
+                    label: 'Motor\nSaya',
                     color: const Color(0xFF3B82F6),
                     onTap: () {
                       Navigator.push(
@@ -316,7 +316,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 Expanded(
                   child: QuickActionButton(
                     icon: Icons.build_circle_outlined,
-                    label: 'Riwayat Servis\n(Firza)',
+                    label: 'Riwayat\nServis',
                     color: const Color(0xFF10B981),
                     onTap: () {
                       Navigator.push(

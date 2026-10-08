@@ -25,7 +25,7 @@ class AddServicePage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Bagian Firza (ui-servis)\nHalaman pencatatan servis & upload nota.',
+                'Formulir Pencatatan Servis & Upload Nota\n(Akan terhubung setelah modul servis digabungkan)',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),
