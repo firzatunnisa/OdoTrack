@@ -1,7 +1,11 @@
-# Abaikan folder native runner bawaan Flutter agar tidak dihitung di statistik bahasa GitHub
-windows/* linguist-vendored
-linux/* linguist-vendored
-macos/* linguist-vendored
-ios/* linguist-vendored
-android/* linguist-vendored
-web/* linguist-vendored
+# Tandai file platform bawaan agar diabaikan oleh GitHub Linguist
+windows/** linguist-vendored
+linux/** linguist-vendored
+macos/** linguist-vendored
+ios/** linguist-vendored
+android/** linguist-vendored
+web/** linguist-vendored
+
+# Atau deteksi sebagai dokumentasi/generated
+*.cmake linguist-documentation
+CMakeLists.txt linguist-documentation
