@@ -14,7 +14,7 @@ class ServiceHistoryPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () {
-            // TODO: Back action
+            Navigator.pop(context);
           },
         ),
         title: const Text(

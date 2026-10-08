@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:odotrack/modules/vehicle/add_vehicle_page.dart';
 import 'package:odotrack/modules/vehicle/vehicle_detail_page.dart';
+import 'package:odotrack/modules/service/service_history_page.dart';
 
 class VehicleListPage extends StatefulWidget {
   const VehicleListPage({super.key});
@@ -115,6 +116,18 @@ class _VehicleListPageState extends State<VehicleListPage> {
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pop(context); // Kembali ke Beranda (Dashboard)
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ServiceHistoryPage(),
+              ),
+            );
+          }
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -122,8 +135,8 @@ class _VehicleListPageState extends State<VehicleListPage> {
             label: 'Beranda',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.directions_car_outlined),
-            activeIcon: Icon(Icons.directions_car),
+            icon: Icon(Icons.two_wheeler_outlined),
+            activeIcon: Icon(Icons.two_wheeler),
             label: 'Kendaraan',
           ),
           BottomNavigationBarItem(
