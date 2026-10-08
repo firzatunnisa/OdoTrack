@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'modules/dashboard/dashboard_page.dart';
+import 'package:odotrack/modules/dashboard/dashboard_page.dart';
 
 void main() {
-  runApp(const OdoTrackApp());
+  runApp(const MyApp());
 }
 
-class OdoTrackApp extends StatelessWidget {
-  const OdoTrackApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +14,8 @@ class OdoTrackApp extends StatelessWidget {
       title: 'OdoTrack',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1E3A8A),
-          primary: const Color(0xFF1E3A8A),
-          secondary: const Color(0xFF3B82F6),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF7C3AED)),
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          centerTitle: false,
-        ),
       ),
       home: const DashboardPage(),
     );
