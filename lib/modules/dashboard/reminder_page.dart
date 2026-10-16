@@ -182,7 +182,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
           'Jadwal & Pengingat',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: const Color(0xFF1E3A8A),
+        backgroundColor: const Color(0xFF6C4DFF),
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -204,7 +204,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.amber,
+          indicatorColor: Colors.white,
           indicatorWeight: 3,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
