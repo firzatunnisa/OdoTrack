@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'OdoTrack',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF5B61FF)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6C4DFF)),
         fontFamily: 'Inter', // Assuming Inter or similar is used, flutter will fall back if not in pubspec
         useMaterial3: true,
       ),
