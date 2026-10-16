@@ -6,6 +6,7 @@ class ReminderItemCard extends StatelessWidget {
   final ValueChanged<bool> onToggle;
   final VoidCallback onMarkDone;
   final VoidCallback onEdit;
+  final VoidCallback? onDelete;
 
   const ReminderItemCard({
     super.key,
@@ -13,6 +14,7 @@ class ReminderItemCard extends StatelessWidget {
     required this.onToggle,
     required this.onMarkDone,
     required this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -179,35 +181,49 @@ class ReminderItemCard extends StatelessWidget {
 
               // Action buttons footer
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton.icon(
-                    onPressed: onEdit,
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.grey.shade700,
+                  if (onDelete != null)
+                    IconButton(
+                      onPressed: onDelete,
+                      tooltip: 'Hapus Pengingat',
+                      icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
                       visualDensity: VisualDensity.compact,
-                    ),
-                    icon: const Icon(Icons.edit_outlined, size: 16),
-                    label: const Text('Atur', style: TextStyle(fontSize: 12)),
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton.icon(
-                    onPressed: onMarkDone,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: statusConfig.color,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    )
+                  else
+                    const SizedBox.shrink(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton.icon(
+                        onPressed: onEdit,
+                        style: TextButton.styleFrom(
+                          foregroundColor: const Color(0xFF5B50E5),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        icon: const Icon(Icons.edit_outlined, size: 16),
+                        label: const Text('Atur', style: TextStyle(fontSize: 12)),
                       ),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    icon: const Icon(Icons.check_circle_outline, size: 16),
-                    label: const Text(
-                      'Selesai',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
+                      const SizedBox(width: 8),
+                      ElevatedButton.icon(
+                        onPressed: onMarkDone,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: statusConfig.color,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        icon: const Icon(Icons.check_circle_outline, size: 16),
+                        label: const Text(
+                          'Selesai',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

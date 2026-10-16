@@ -152,6 +152,194 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
     );
   }
 
+  void _deleteReminder(ReminderModel item) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Hapus Pengingat', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text('Apakah Anda yakin ingin menghapus pengingat "${item.title}"?'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(ctx);
+              setState(() {
+                _reminders.removeWhere((r) => r.id == item.id);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Pengingat "${item.title}" berhasil dihapus'),
+                  backgroundColor: Colors.red.shade600,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: const Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEditSheet(ReminderModel item) {
+    final titleCtrl = TextEditingController(text: item.title);
+    final descCtrl = TextEditingController(text: item.description);
+    final kmCtrl = TextEditingController(text: item.targetKm != null ? item.targetKm.toString() : '');
+    DateTime? selectedDate = item.dueDate;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Ubah Pengingat',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(ctx),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: titleCtrl,
+                      decoration: InputDecoration(
+                        labelText: 'Judul Pengingat',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    if (item.category == 'tax') ...[
+                      InkWell(
+                        onTap: () async {
+                          final picked = await showDatePicker(
+                            context: context,
+                            initialDate: selectedDate ?? DateTime.now().add(const Duration(days: 30)),
+                            firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                            lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+                          );
+                          if (picked != null) {
+                            setModalState(() => selectedDate = picked);
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                selectedDate == null
+                                    ? 'Pilih Tanggal Jatuh Tempo'
+                                    : 'Jatuh Tempo: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              const Icon(Icons.calendar_month, color: Color(0xFF5B50E5)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      TextField(
+                        controller: kmCtrl,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Target Kilometer (KM)',
+                          suffixText: 'KM',
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: descCtrl,
+                      maxLines: 2,
+                      decoration: InputDecoration(
+                        labelText: 'Catatan / Deskripsi',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF5B50E5),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: () {
+                          if (titleCtrl.text.trim().isEmpty) return;
+                          final newKm = int.tryParse(kmCtrl.text);
+                          Navigator.pop(ctx);
+                          setState(() {
+                            final idx = _reminders.indexWhere((r) => r.id == item.id);
+                            if (idx != -1) {
+                              _reminders[idx] = item.copyWith(
+                                title: titleCtrl.text.trim(),
+                                description: descCtrl.text.trim(),
+                                targetKm: item.category != 'tax' ? newKm ?? item.targetKm : null,
+                                dueDate: item.category == 'tax' ? selectedDate ?? item.dueDate : null,
+                              );
+                            }
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Pengingat "${titleCtrl.text}" berhasil diperbarui!'),
+                              backgroundColor: const Color(0xFF10B981),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        },
+                        child: const Text('Simpan Perubahan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   void _showAddSheet() {
     showModalBottomSheet(
       context: context,
@@ -298,15 +486,8 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
           reminder: item,
           onToggle: (val) => _toggleReminder(originalIdx, val),
           onMarkDone: () => _markDone(item),
-          onEdit: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Ubah konfigurasi "${item.title}"'),
-                duration: const Duration(seconds: 1),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          },
+          onEdit: () => _showEditSheet(item),
+          onDelete: () => _deleteReminder(item),
         );
       },
     );
