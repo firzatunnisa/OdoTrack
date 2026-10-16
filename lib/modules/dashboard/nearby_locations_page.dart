@@ -101,7 +101,7 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
       backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
         title: const Text('Lokasi Bengkel & Samsat', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        backgroundColor: const Color(0xFF1E3A8A),
+        backgroundColor: const Color(0xFF5B50E5),
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -118,7 +118,7 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
                   onChanged: (val) => setState(() => _searchQuery = val),
                   decoration: InputDecoration(
                     hintText: 'Cari bengkel resmi atau kantor Samsat...',
-                    prefixIcon: const Icon(Icons.search, color: Color(0xFF1E3A8A)),
+                    prefixIcon: const Icon(Icons.search, color: Color(0xFF5B50E5)),
                     filled: true,
                     fillColor: const Color(0xFFF1F5F9),
                     contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
@@ -187,7 +187,7 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
                           Container(
                             padding: const EdgeInsets.all(6),
                             decoration: const BoxDecoration(
-                              color: Color(0xFF2563EB),
+                              color: Color(0xFF5B50E5),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(Icons.my_location, color: Colors.white, size: 14),
@@ -249,7 +249,7 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1E3A8A) : Colors.grey.shade100,
+          color: isSelected ? const Color(0xFF5B50E5) : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -296,12 +296,12 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isSamsat ? const Color(0xFFEF4444).withValues(alpha: 0.12) : const Color(0xFF2563EB).withValues(alpha: 0.12),
+                  color: isSamsat ? const Color(0xFFEF4444).withValues(alpha: 0.12) : const Color(0xFF5B50E5).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   isSamsat ? Icons.account_balance : Icons.build,
-                  color: isSamsat ? const Color(0xFFEF4444) : const Color(0xFF2563EB),
+                  color: isSamsat ? const Color(0xFFEF4444) : const Color(0xFF5B50E5),
                   size: 24,
                 ),
               ),
@@ -392,8 +392,8 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
                     );
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF1E3A8A),
-                    side: const BorderSide(color: Color(0xFF1E3A8A)),
+                    foregroundColor: const Color(0xFF5B50E5),
+                    side: const BorderSide(color: Color(0xFF5B50E5)),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   icon: const Icon(Icons.phone, size: 16),
@@ -407,13 +407,13 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Membuka rute navigasi menuju ${item.name}...'),
-                        backgroundColor: const Color(0xFF2563EB),
+                        backgroundColor: const Color(0xFF5B50E5),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E3A8A),
+                    backgroundColor: const Color(0xFF5B50E5),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

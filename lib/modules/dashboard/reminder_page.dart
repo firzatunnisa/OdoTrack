@@ -182,7 +182,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
           'Jadwal & Pengingat',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: const Color(0xFF6C4DFF),
+        backgroundColor: const Color(0xFF5B50E5),
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -263,7 +263,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddSheet,
-        backgroundColor: const Color(0xFF6C4DFF),
+        backgroundColor: const Color(0xFF5B50E5),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.notification_add_outlined),
         label: const Text('Buat Pengingat'),
