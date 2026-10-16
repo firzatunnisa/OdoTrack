@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/map_launcher.dart';
 
 class LocationModel {
   final String id;
@@ -148,66 +149,103 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
           ),
 
           // Map Preview Card
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            height: 130,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF0F172A), Color(0xFF1E293B)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+          InkWell(
+            onTap: () {
+              const query = 'Bengkel motor resmi dan kantor Samsat di Padang';
+              final mapsUrl = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(query)}';
+              launchMapUrl(mapsUrl);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Membuka Google Maps di area Padang...'),
+                  backgroundColor: Color(0xFF5B50E5),
+                  behavior: SnackBarBehavior.floating,
                 ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Opacity(
-                    opacity: 0.15,
-                    child: Center(
-                      child: Icon(Icons.map_outlined, size: 140, color: Colors.blue.shade200),
+              );
+            },
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              height: 130,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF0F172A), Color(0xFF1E293B)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Opacity(
+                      opacity: 0.15,
+                      child: Center(
+                        child: Icon(Icons.map_outlined, size: 140, color: Colors.blue.shade200),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF5B50E5),
-                              shape: BoxShape.circle,
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF5B50E5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.my_location, color: Colors.white, size: 14),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  'GPS / Radar Terdekat Aktif',
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                                ),
+                              ],
                             ),
-                            child: const Icon(Icons.my_location, color: Colors.white, size: 14),
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'GPS / Radar Terdekat Aktif',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Menampilkan ${_filteredLocations.length} titik bengkel & Samsat di sekitar lokasi Anda saat ini.',
-                        style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 12),
-                      ),
-                    ],
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Text(
+                                    'Buka Maps',
+                                    style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Icon(Icons.open_in_new, color: Colors.white, size: 12),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Menampilkan ${_filteredLocations.length} titik bengkel & Samsat di sekitar lokasi Anda saat ini.',
+                          style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 12),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 
@@ -384,6 +422,9 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () {
+                    final cleanPhone = item.phone.replaceAll(RegExp(r'[^0-9+]'), '');
+                    final telUrl = 'tel:$cleanPhone';
+                    launchMapUrl(telUrl);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Menghubungi ${item.phone}...'),
@@ -404,9 +445,12 @@ class _NearbyLocationsPageState extends State<NearbyLocationsPage> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
+                    final query = Uri.encodeComponent('${item.name}, ${item.address}');
+                    final mapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=$query';
+                    launchMapUrl(mapsUrl);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Membuka rute navigasi menuju ${item.name}...'),
+                        content: Text('Membuka rute Google Maps menuju ${item.name}...'),
                         backgroundColor: const Color(0xFF5B50E5),
                         behavior: SnackBarBehavior.floating,
                       ),
