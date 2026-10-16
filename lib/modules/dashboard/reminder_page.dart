@@ -263,7 +263,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddSheet,
-        backgroundColor: const Color(0xFF1E3A8A),
+        backgroundColor: const Color(0xFF6C4DFF),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.notification_add_outlined),
         label: const Text('Buat Pengingat'),
