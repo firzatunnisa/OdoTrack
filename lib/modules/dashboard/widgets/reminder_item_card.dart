@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/reminder_model.dart';
+import 'package:odotrack/utils/formatters.dart';
 
 class ReminderItemCard extends StatelessWidget {
   final ReminderModel reminder;
@@ -238,9 +239,9 @@ class ReminderItemCard extends StatelessWidget {
     if (reminder.category == 'tax') {
       final days = reminder.remainingDays;
       if (days == null) return 'Jadwal belum ditentukan';
-      if (days < 0) return 'Lewat ${days.abs()} hari (${_formatDate(reminder.dueDate!)})';
+      if (days < 0) return 'Lewat ${days.abs()} hari (${Formatters.date(reminder.dueDate!)})';
       if (days == 0) return 'Jatuh tempo HARI INI!';
-      return 'Sisa $days hari lagi (${_formatDate(reminder.dueDate!)})';
+      return 'Sisa $days hari lagi (${Formatters.date(reminder.dueDate!)})';
     } else {
       final km = reminder.remainingKm;
       if (km == null) return 'Target KM belum diisi';
@@ -248,14 +249,6 @@ class ReminderItemCard extends StatelessWidget {
       if (km == 0) return 'Ganti sekarang (Target: ${reminder.targetKm} km)';
       return 'Sisa $km km lagi (Target: ${reminder.targetKm} km)';
     }
-  }
-
-  String _formatDate(DateTime date) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
   _StatusConfig _getStatusConfig(String status) {

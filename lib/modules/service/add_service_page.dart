@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:odotrack/modules/service/service_record.dart';
+import 'package:odotrack/utils/formatters.dart';
 
 class AddServicePage extends StatefulWidget {
   final int lastOdometer;
@@ -28,7 +29,7 @@ class _AddServicePageState extends State<AddServicePage> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
-    _dateController.text = _formatDateDisplay(_selectedDate);
+    _dateController.text = Formatters.date(_selectedDate);
   }
 
   @override
@@ -39,11 +40,6 @@ class _AddServicePageState extends State<AddServicePage> {
     _costController.dispose();
     _noteController.dispose();
     super.dispose();
-  }
-
-  String _formatDateDisplay(DateTime date) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
   void _selectDate(BuildContext context) async {
@@ -68,7 +64,7 @@ class _AddServicePageState extends State<AddServicePage> {
     if (picked != null) {
       setState(() {
         _selectedDate = picked;
-        _dateController.text = _formatDateDisplay(picked);
+        _dateController.text = Formatters.date(picked);
       });
     }
   }
@@ -247,7 +243,7 @@ class _AddServicePageState extends State<AddServicePage> {
     // Frame 06: Validasi Error Kilometer tidak boleh lebih kecil dari entri sebelumnya
     if (km < widget.lastOdometer) {
       setState(() {
-        _kmErrorText = 'Kilometer tidak boleh lebih kecil dari entri sebelumnya (${_formatThousand(widget.lastOdometer)} km).';
+        _kmErrorText = 'Kilometer tidak boleh lebih kecil dari entri sebelumnya (${Formatters.number(widget.lastOdometer)} km).';
       });
       return;
     }
@@ -277,13 +273,6 @@ class _AddServicePageState extends State<AddServicePage> {
     );
 
     _showSuccessDialog(newRecord);
-  }
-
-  String _formatThousand(int number) {
-    return number.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
   }
 
   @override

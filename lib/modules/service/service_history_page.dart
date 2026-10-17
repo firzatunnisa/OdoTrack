@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:odotrack/modules/service/service_record.dart';
 import 'package:odotrack/modules/service/add_service_page.dart';
 import 'package:odotrack/modules/service/service_detail_page.dart';
+import 'package:odotrack/utils/formatters.dart';
 
 class ServiceHistoryPage extends StatefulWidget {
   const ServiceHistoryPage({super.key});
@@ -44,27 +45,6 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
 
   String _selectedFilter = 'Semua';
   final List<String> _filters = ['Semua', 'Servis Ringan', 'Ganti Oli', 'Ganti Kampas Rem'];
-
-  // Helper Formatter
-  String _formatCurrency(int amount) {
-    String str = amount.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
-    return 'Rp$str';
-  }
-
-  String _formatNumber(int number) {
-    return number.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
-  }
 
   // Hitung data dinamis untuk Kartu Estimasi (Frame 01)
   int get _lastOdometer {
@@ -317,7 +297,7 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
                           Text(
                             _records.isEmpty
                                 ? 'Belum ada data servis untuk menghitung estimasi.'
-                                : 'Berdasarkan riwayat, servis disarankan pada ${_formatDate(_nextServiceDate)} atau pada ${_formatNumber(_nextServiceKm)} km.',
+                                : 'Berdasarkan riwayat, servis disarankan pada ${Formatters.date(_nextServiceDate)} atau pada ${Formatters.number(_nextServiceKm)} km.',
                             style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 12,
@@ -346,7 +326,7 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Sisa ${_formatNumber(_nextServiceKm - _lastOdometer)} km / $_remainingDays hari',
+                        'Sisa ${Formatters.number(_nextServiceKm - _lastOdometer)} km / $_remainingDays hari',
                         style: TextStyle(color: Colors.grey.shade700, fontSize: 11),
                       ),
                     ],
@@ -384,7 +364,7 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        _formatCurrency(_totalCost),
+                        Formatters.rupiah(_totalCost),
                         style: const TextStyle(
                           color: Color(0xFF6C4DFF),
                           fontWeight: FontWeight.bold,
@@ -603,7 +583,7 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _formatDate(record.tanggal),
+                    Formatters.date(record.tanggal),
                     style: const TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                 ],
@@ -613,7 +593,7 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  _formatCurrency(record.biaya),
+                  Formatters.rupiah(record.biaya),
                   style: const TextStyle(
                     color: Color(0xFF12B76A),
                     fontWeight: FontWeight.bold,
@@ -622,7 +602,7 @@ class _ServiceHistoryPageState extends State<ServiceHistoryPage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${_formatNumber(record.kilometer)} km',
+                  '${Formatters.number(record.kilometer)} km',
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],

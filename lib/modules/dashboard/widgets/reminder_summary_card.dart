@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/reminder_model.dart';
+import 'package:odotrack/utils/formatters.dart';
 
 class ReminderSummaryCard extends StatelessWidget {
   final ReminderModel reminder;
@@ -111,9 +112,7 @@ class ReminderSummaryCard extends StatelessWidget {
       if (days == 0) return 'Jatuh tempo hari ini!';
       // Format as date like "12 Nov 2026"
       if (reminder.dueDate != null) {
-        final d = reminder.dueDate!;
-        final months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-        return '${d.day} ${months[d.month - 1]} ${d.year}';
+        return Formatters.date(reminder.dueDate!);
       }
       return 'Tersisa $days hari lagi';
     } else {
@@ -121,14 +120,7 @@ class ReminderSummaryCard extends StatelessWidget {
       if (km == null) return reminder.description;
       if (km < 0) return 'Lewat ${km.abs()} km yang lalu!';
       if (km == 0) return 'Waktunya servis sekarang!';
-      return 'Dalam ${_formatKm(km)} km';
+      return 'Dalam ${Formatters.number(km)} km';
     }
-  }
-
-  String _formatKm(int km) {
-    return km.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
   }
 }

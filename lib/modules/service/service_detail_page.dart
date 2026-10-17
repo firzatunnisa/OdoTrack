@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:odotrack/modules/service/service_record.dart';
+import 'package:odotrack/utils/formatters.dart';
 
 class ServiceDetailPage extends StatelessWidget {
   final ServiceRecord record;
@@ -8,26 +9,6 @@ class ServiceDetailPage extends StatelessWidget {
     super.key,
     required this.record,
   });
-
-  String _formatCurrency(int amount) {
-    String str = amount.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
-    return 'Rp$str';
-  }
-
-  String _formatNumber(int number) {
-    return number.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
-  }
 
   // Frame 11: Dialog Konfirmasi Hapus
   void _confirmDelete(BuildContext context) {
@@ -58,7 +39,7 @@ class ServiceDetailPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Data servis tanggal ${_formatDate(record.tanggal)} akan dihapus. Tindakan ini tidak dapat dibatalkan.',
+                  'Data servis tanggal ${Formatters.date(record.tanggal)} akan dihapus. Tindakan ini tidak dapat dibatalkan.',
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.black54, fontSize: 13, height: 1.4),
                 ),
@@ -214,11 +195,11 @@ class ServiceDetailPage extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Detail List Table
-            _buildDetailRow('Tanggal', _formatDate(record.tanggal)),
+            _buildDetailRow('Tanggal', Formatters.date(record.tanggal)),
             const Divider(height: 24),
-            _buildDetailRow('Odometer', '${_formatNumber(record.kilometer)} km'),
+            _buildDetailRow('Odometer', '${Formatters.number(record.kilometer)} km'),
             const Divider(height: 24),
-            _buildDetailRow('Biaya', _formatCurrency(record.biaya), isCost: true),
+            _buildDetailRow('Biaya', Formatters.rupiah(record.biaya), isCost: true),
             const Divider(height: 24),
             _buildDetailRow('Catatan', record.catatan.isEmpty ? '-' : record.catatan),
             const Divider(height: 24),

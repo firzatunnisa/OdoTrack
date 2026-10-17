@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/reminder_model.dart';
+import 'package:odotrack/utils/formatters.dart';
 
 class ActiveVehicleCard extends StatelessWidget {
   final VehicleSummary vehicle;
@@ -117,7 +118,7 @@ class ActiveVehicleCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _formatKm(vehicle.currentKm),
+                        '${Formatters.number(vehicle.currentKm)} km',
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -157,13 +158,5 @@ class ActiveVehicleCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatKm(int km) {
-    final formatted = km.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
-    return '$formatted km';
   }
 }
