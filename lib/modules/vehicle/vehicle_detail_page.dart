@@ -3,8 +3,13 @@ import 'package:odotrack/modules/vehicle/add_vehicle_page.dart';
 
 class VehicleDetailPage extends StatefulWidget {
   final Map<String, dynamic> vehicle;
+  final List<String> existingPlates;
 
-  const VehicleDetailPage({super.key, required this.vehicle});
+  const VehicleDetailPage({
+    super.key,
+    required this.vehicle,
+    this.existingPlates = const [],
+  });
 
   @override
   State<VehicleDetailPage> createState() => _VehicleDetailPageState();
@@ -20,7 +25,10 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
   }
 
   void _showUpdateOdometerDialog() {
-    final TextEditingController odometerController = TextEditingController(text: currentVehicle['odometer']);
+    final TextEditingController odometerController =
+        TextEditingController(text: currentVehicle['odometer']);
+    final formKey = GlobalKey<FormState>();
+    final currentOdoValue = int.tryParse(currentVehicle['odometer'] ?? '0') ?? 0;
 
     showDialog(
       context: context,
@@ -32,30 +40,61 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Odometer Terakhir (km)', style: TextStyle(fontSize: 14)),
-              const SizedBox(height: 8),
-              TextField(
-                controller: odometerController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade50,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Odometer Terakhir (km)', style: TextStyle(fontSize: 14)),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: odometerController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFF6C4DFF)),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.red),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.red),
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFF5B61FF)),
-                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Odometer wajib diisi';
+                    }
+                    final odo = int.tryParse(value.trim());
+                    if (odo == null) {
+                      return 'Odometer harus berupa angka';
+                    }
+                    if (odo < 0) {
+                      return 'Odometer tidak boleh negatif';
+                    }
+                    if (odo < currentOdoValue) {
+                      return 'Tidak boleh kurang dari odometer saat ini ($currentOdoValue km)';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actionsPadding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -66,16 +105,21 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  currentVehicle['odometer'] = odometerController.text;
-                });
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Odometer berhasil diupdate!'), backgroundColor: Colors.green),
-                );
+                if (formKey.currentState!.validate()) {
+                  setState(() {
+                    currentVehicle['odometer'] = odometerController.text.trim();
+                  });
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Odometer berhasil diupdate!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5B61FF),
+                backgroundColor: const Color(0xFF6C4DFF),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               child: const Text('Simpan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -148,17 +192,17 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color(0xFF6C4DFF),
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+            icon: const Icon(Icons.arrow_back, color: Colors.white, size: 22),
             onPressed: () {
               Navigator.pop(context, {'action': 'update', 'data': currentVehicle});
             },
           ),
           title: const Text(
             'Detail Kendaraan',
-            style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           centerTitle: false,
         ),
@@ -187,18 +231,43 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Detail Kendaraan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isActive ? Colors.green.shade50 : Colors.red.shade50,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            isActive ? 'Aktif' : 'Tidak Aktif',
-                            style: TextStyle(
-                              color: isActive ? Colors.green : Colors.red,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              currentVehicle['isActive'] = !isActive;
+                              currentVehicle['statusMessage'] = !isActive ? 'Aktif' : 'Tidak aktif';
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: isActive ? Colors.green.shade50 : Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: isActive ? Colors.green.shade200 : Colors.red.shade200,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  isActive ? Icons.check_circle : Icons.cancel,
+                                  size: 13,
+                                  color: isActive ? Colors.green : Colors.red,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  isActive ? 'Aktif' : 'Tidak Aktif',
+                                  style: TextStyle(
+                                    color: isActive ? Colors.green : Colors.red,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(Icons.swap_horiz, size: 13, color: isActive ? Colors.green : Colors.red),
+                              ],
                             ),
                           ),
                         ),
@@ -219,7 +288,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                             const SizedBox(width: 8),
                             InkWell(
                               onTap: _showUpdateOdometerDialog,
-                              child: const Icon(Icons.edit, size: 16, color: Color(0xFF5B61FF)),
+                              child: const Icon(Icons.edit, size: 16, color: Color(0xFF6C4DFF)),
                             ),
                           ],
                         ),
@@ -233,10 +302,19 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () async {
+                              // Build list of plates excluding current vehicle's plate
+                              final otherPlates = widget.existingPlates
+                                  .where((p) => p.toUpperCase().replaceAll(' ', '') !=
+                                      (currentVehicle['plate'] ?? '').toString().toUpperCase().replaceAll(' ', ''))
+                                  .toList();
+
                               final updatedVehicle = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddVehiclePage(vehicle: currentVehicle),
+                                  builder: (context) => AddVehiclePage(
+                                    vehicle: currentVehicle,
+                                    existingPlates: otherPlates,
+                                  ),
                                 ),
                               );
 
@@ -247,11 +325,11 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                               }
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Color(0xFF5B61FF)),
+                              side: const BorderSide(color: Color(0xFF6C4DFF)),
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                             ),
-                            child: const Text('Ubah Data', style: TextStyle(color: Color(0xFF5B61FF), fontWeight: FontWeight.bold)),
+                            child: const Text('Ubah Data', style: TextStyle(color: Color(0xFF6C4DFF), fontWeight: FontWeight.bold)),
                           ),
                         ),
                         const SizedBox(width: 12),

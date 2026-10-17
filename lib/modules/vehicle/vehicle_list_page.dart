@@ -40,15 +40,18 @@ class _VehicleListPageState extends State<VehicleListPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Collect all existing plates for duplicate validation
+    final allPlates = vehicles.map((v) => v['plate']?.toString() ?? '').toList();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF6C4DFF),
         elevation: 0,
         title: const Text(
           'Daftar Kendaraan',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -58,13 +61,54 @@ class _VehicleListPageState extends State<VehicleListPage> {
       body: Stack(
         children: [
           vehicles.isEmpty
-              ? const Center(child: Text('Belum ada kendaraan. Silakan tambah baru.'))
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6C4DFF).withValues(alpha: 0.08),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.two_wheeler,
+                            size: 52,
+                            color: Color(0xFF6C4DFF),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        const Text(
+                          'Belum Ada Kendaraan',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Tambahkan kendaraan pertama kamu\nuntuk mulai memantau servis & odometer.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey.shade500,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               : ListView.builder(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 100),
                   itemCount: vehicles.length,
                   itemBuilder: (context, index) {
                     final vehicle = vehicles[index];
-                    return _buildVehicleCard(vehicle, index);
+                    return _buildVehicleCard(vehicle, index, allPlates);
                   },
                 ),
           Positioned(
@@ -75,7 +119,11 @@ class _VehicleListPageState extends State<VehicleListPage> {
               onPressed: () async {
                 final newVehicle = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AddVehiclePage()),
+                  MaterialPageRoute(
+                    builder: (context) => AddVehiclePage(
+                      existingPlates: allPlates,
+                    ),
+                  ),
                 );
                 
                 if (newVehicle != null) {
@@ -85,7 +133,7 @@ class _VehicleListPageState extends State<VehicleListPage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5B61FF),
+                backgroundColor: const Color(0xFF6C4DFF),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -113,7 +161,7 @@ class _VehicleListPageState extends State<VehicleListPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1, // 'Kendaraan' is selected
-        selectedItemColor: const Color(0xFF5B61FF),
+        selectedItemColor: const Color(0xFF6C4DFF),
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
@@ -162,7 +210,7 @@ class _VehicleListPageState extends State<VehicleListPage> {
     );
   }
 
-  Widget _buildVehicleCard(Map<String, dynamic> vehicle, int index) {
+  Widget _buildVehicleCard(Map<String, dynamic> vehicle, int index, List<String> allPlates) {
     bool isActive = vehicle['isActive'] ?? true;
     Color cardColor = isActive ? Colors.white : const Color(0xFFFFF5F5);
     Color borderColor = isActive ? Colors.grey.shade300 : Colors.red.shade100;
@@ -172,7 +220,10 @@ class _VehicleListPageState extends State<VehicleListPage> {
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => VehicleDetailPage(vehicle: vehicle),
+            builder: (context) => VehicleDetailPage(
+              vehicle: vehicle,
+              existingPlates: allPlates,
+            ),
           ),
         );
 
@@ -216,7 +267,7 @@ class _VehicleListPageState extends State<VehicleListPage> {
               ),
               child: const Icon(
                 Icons.two_wheeler,
-                color: Color(0xFF5B61FF),
+                color: Color(0xFF6C4DFF),
               ),
             ),
             const SizedBox(width: 16),
