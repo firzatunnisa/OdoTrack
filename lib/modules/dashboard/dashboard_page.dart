@@ -9,6 +9,7 @@ import '../vehicle/vehicle_list_page.dart';
 import '../vehicle/add_vehicle_page.dart';
 import '../service/service_history_page.dart';
 import '../service/add_service_page.dart';
+import '../profile/profile_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -260,16 +261,24 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   // Profile circle
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.person_outline,
-                      color: Colors.grey.shade600,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ProfilePage()),
+                      );
+                    },
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.person_outline,
+                        color: Colors.grey.shade600,
+                      ),
                     ),
                   ),
                 ],
@@ -454,20 +463,23 @@ class _DashboardPageState extends State<DashboardPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const VehicleListPage()),
-              );
+              ).then((_) {
+                if (mounted) setState(() => _selectedBottomIndex = 0);
+              });
             } else if (idx == 2) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ReminderPage()),
-              );
+              ).then((_) {
+                if (mounted) setState(() => _selectedBottomIndex = 0);
+              });
             } else if (idx == 3) {
-              // Akun - placeholder
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Halaman Akun segera hadir!'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              ).then((_) {
+                if (mounted) setState(() => _selectedBottomIndex = 0);
+              });
             }
           },
           items: const [

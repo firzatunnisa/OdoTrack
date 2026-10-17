@@ -20,7 +20,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
   }
 
   void _showUpdateOdometerDialog() {
-    final TextEditingController _odometerController = TextEditingController(text: currentVehicle['odometer']);
+    final TextEditingController odometerController = TextEditingController(text: currentVehicle['odometer']);
 
     showDialog(
       context: context,
@@ -39,7 +39,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
               const Text('Odometer Terakhir (km)', style: TextStyle(fontSize: 14)),
               const SizedBox(height: 8),
               TextField(
-                controller: _odometerController,
+                controller: odometerController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true,
@@ -67,7 +67,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  currentVehicle['odometer'] = _odometerController.text;
+                  currentVehicle['odometer'] = odometerController.text;
                 });
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
