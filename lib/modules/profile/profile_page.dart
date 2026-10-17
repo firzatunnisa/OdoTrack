@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'about_page.dart';
+import '../auth/landing_page.dart';
 import '../vehicle/vehicle_list_page.dart';
 import '../dashboard/nearby_locations_page.dart';
 import '../dashboard/reminder_page.dart';
@@ -20,6 +21,38 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _notifTax = true;
   bool _notifH7 = true;
   bool _soundEnabled = true;
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Keluar dari Akun', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: const Text('Apakah Anda yakin ingin keluar dari akun ini?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Batal', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const LandingPage()),
+                (route) => false,
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFEF4444),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: const Text('Keluar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
 
   void _showEditProfileDialog() {
     final nameController = TextEditingController(text: _userName);
@@ -459,6 +492,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       );
                     },
+                  ),
+                  const SizedBox(height: 12),
+
+                  _buildMenuItem(
+                    icon: Icons.logout_rounded,
+                    iconBgColor: const Color(0xFFFEE2E2),
+                    iconColor: const Color(0xFFEF4444),
+                    title: 'Keluar dari Akun',
+                    onTap: _showLogoutDialog,
                   ),
                   const SizedBox(height: 32),
                 ],

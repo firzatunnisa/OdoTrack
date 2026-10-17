@@ -9,7 +9,6 @@ import '../vehicle/vehicle_list_page.dart';
 import '../vehicle/add_vehicle_page.dart';
 import '../service/service_history_page.dart';
 import '../service/add_service_page.dart';
-import '../auth/landing_page.dart';
 import '../profile/profile_page.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -224,66 +223,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  void _showProfileModal() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                color: Color(0xFF5B50E5),
-                shape: BoxShape.circle,
-              ),
-              child: const Center(
-                child: Text(
-                  'N',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Nadila',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              'nadila@gmail.com',
-              style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
-            ),
-            const SizedBox(height: 20),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Keluar dari Akun', style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600)),
-              onTap: () {
-                Navigator.pop(ctx);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LandingPage()),
-                  (route) => false,
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
