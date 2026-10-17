@@ -121,7 +121,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF10B981),
+              backgroundColor: AppColors.success,
               foregroundColor: Colors.white,
             ),
             onPressed: () {
@@ -145,7 +145,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${item.title} selesai! Jadwal diperbarui ke periode berikutnya.'),
-                  backgroundColor: const Color(0xFF10B981),
+                  backgroundColor: AppColors.success,
                   behavior: SnackBarBehavior.floating,
                 ),
               );
@@ -274,7 +274,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
                                     : 'Jatuh Tempo: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
                                 style: const TextStyle(fontSize: 14),
                               ),
-                              const Icon(Icons.calendar_month, color: Color(0xFF5B50E5)),
+                              const Icon(Icons.calendar_month, color: AppColors.primary),
                             ],
                           ),
                         ),
@@ -305,7 +305,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
                       height: 48,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF5B50E5),
+                          backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
@@ -327,7 +327,7 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Pengingat "${titleCtrl.text}" berhasil diperbarui!'),
-                              backgroundColor: const Color(0xFF10B981),
+                              backgroundColor: AppColors.success,
                               behavior: SnackBarBehavior.floating,
                             ),
                           );

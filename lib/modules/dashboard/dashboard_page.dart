@@ -109,7 +109,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7C3AED),
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -133,7 +133,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   SnackBar(
                     content: Text(
                         'Kilometer berhasil diupdate menjadi $newKm KM!'),
-                    backgroundColor: const Color(0xFF16A34A),
+                    backgroundColor: AppColors.success,
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
@@ -174,7 +174,7 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(height: 14),
             ListTile(
               leading: const CircleAvatar(
-                backgroundColor: Color(0xFF7C3AED),
+                backgroundColor: AppColors.primary,
                 child: Icon(Icons.two_wheeler, color: Colors.white),
               ),
               title: const Text('Honda Scoopy',
@@ -209,10 +209,10 @@ class _DashboardPageState extends State<DashboardPage> {
             const Divider(),
             ListTile(
               leading: const Icon(Icons.add_circle_outline,
-                  color: Color(0xFF7C3AED)),
+                  color: AppColors.primary),
               title: const Text('Tambah Kendaraan Lain',
                   style: TextStyle(
-                      color: Color(0xFF7C3AED), fontWeight: FontWeight.bold)),
+                      color: AppColors.primary, fontWeight: FontWeight.bold)),
               onTap: () {
                 Navigator.pop(ctx);
                 Navigator.push(
@@ -232,7 +232,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEDE9F6), // light purple background
+      backgroundColor: AppColors.primaryLight,
       body: SafeArea(
         child: Column(
           children: [
@@ -252,7 +252,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1E293B),
+                            color: AppColors.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -323,7 +323,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E293B),
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -374,7 +374,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E293B),
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -405,7 +405,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1E293B),
+                            color: AppColors.textPrimary,
                           ),
                         ),
                         GestureDetector(
@@ -420,7 +420,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             'Lihat Semua',
                             style: TextStyle(
                               fontSize: 13,
-                              color: Color(0xFF7C3AED),
+                              color: AppColors.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

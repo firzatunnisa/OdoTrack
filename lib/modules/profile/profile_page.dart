@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEF4444),
+              backgroundColor: AppColors.error,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
             child: const Text('Keluar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             const Text(
               'Perbarui nama dan status kepemilikan Anda:',
-              style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4F46E5),
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Profil berhasil diperbarui!'),
-                    backgroundColor: Color(0xFF16A34A),
+                    backgroundColor: AppColors.success,
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
@@ -170,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E293B),
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -181,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 20),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                activeTrackColor: const Color(0xFF4F46E5),
+                activeTrackColor: AppColors.primary,
                 title: const Text(
                   'Pengingat Servis Odometer',
                   style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
@@ -199,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const Divider(height: 1),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                activeTrackColor: const Color(0xFF4F46E5),
+                activeTrackColor: AppColors.primary,
                 title: const Text(
                   'Pengingat Pajak STNK',
                   style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
@@ -217,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const Divider(height: 1),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                activeTrackColor: const Color(0xFF4F46E5),
+                activeTrackColor: AppColors.primary,
                 title: const Text(
                   'Peringatan Dini (H-7)',
                   style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
@@ -235,7 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const Divider(height: 1),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                activeTrackColor: const Color(0xFF4F46E5),
+                activeTrackColor: AppColors.primary,
                 title: const Text(
                   'Suara & Getar',
                   style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
@@ -256,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 48,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4F46E5),
+                    backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -267,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Pengaturan notifikasi berhasil disimpan!'),
-                        backgroundColor: Color(0xFF16A34A),
+                        backgroundColor: AppColors.success,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:odotrack/theme/app_colors.dart';
 
 class AddVehiclePage extends StatefulWidget {
   final Map<String, dynamic>? vehicle;
@@ -195,7 +196,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF6C4DFF),
+          backgroundColor: AppColors.primary,
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 22),
@@ -236,9 +237,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                     width: double.infinity,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.indigo.shade50,
+                      color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.indigo.shade100),
+                      border: Border.all(color: AppColors.primarySubtle),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -246,7 +247,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: const BoxDecoration(
-                            color: Color(0xFF6C4DFF),
+                            color: AppColors.primary,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.camera_alt, color: Colors.white),
@@ -255,7 +256,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         const Text(
                           'Ambil atau Unggah Foto\n(Opsional)',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.indigo, fontSize: 12),
+                          style: TextStyle(color: AppColors.primary, fontSize: 12),
                         ),
                       ],
                     ),
@@ -397,8 +398,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                               }
                             },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6C4DFF),
-                        disabledBackgroundColor: const Color(0xFF6C4DFF).withValues(alpha: 0.6),
+                        backgroundColor: AppColors.primary,
+                        disabledBackgroundColor: AppColors.primarySubtle,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         elevation: 0,
@@ -462,7 +463,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF6C4DFF)),
+              borderSide: const BorderSide(color: AppColors.primary),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

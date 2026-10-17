@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:odotrack/modules/vehicle/add_vehicle_page.dart';
+import 'package:odotrack/theme/app_colors.dart';
 
 class VehicleDetailPage extends StatefulWidget {
   final Map<String, dynamic> vehicle;
@@ -65,7 +66,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF6C4DFF)),
+                      borderSide: const BorderSide(color: AppColors.primary),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -119,7 +120,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6C4DFF),
+                backgroundColor: AppColors.primary,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               child: const Text('Simpan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -190,9 +191,9 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF6C4DFF),
+          backgroundColor: AppColors.primary,
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 22),
@@ -288,7 +289,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                             const SizedBox(width: 8),
                             InkWell(
                               onTap: _showUpdateOdometerDialog,
-                              child: const Icon(Icons.edit, size: 16, color: Color(0xFF6C4DFF)),
+                              child: const Icon(Icons.edit, size: 16, color: AppColors.primary),
                             ),
                           ],
                         ),
@@ -325,11 +326,11 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                               }
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Color(0xFF6C4DFF)),
+                              side: const BorderSide(color: AppColors.primary),
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                             ),
-                            child: const Text('Ubah Data', style: TextStyle(color: Color(0xFF6C4DFF), fontWeight: FontWeight.bold)),
+                            child: const Text('Ubah Data', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
                           ),
                         ),
                         const SizedBox(width: 12),
