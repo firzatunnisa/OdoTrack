@@ -11,10 +11,9 @@ import 'package:odotrack/main.dart';
 void main() {
   testWidgets('OdoTrack app smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const OdoTrackApp());
+    await tester.pumpWidget(const MyApp());
 
-    // Verify dashboard renders
-    expect(find.text('Halo, Nadila 👋'), findsOneWidget);
-    expect(find.text('Aksi Cepat & Navigasi'), findsOneWidget);
+    // Verify landing page renders
+    expect(find.text('Mulai Sekarang'), findsOneWidget);
   });
 }

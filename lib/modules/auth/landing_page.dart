@@ -19,8 +19,8 @@ class LandingPage extends StatelessWidget {
                 children: [
                   const Spacer(flex: 2),
 
-                  // Custom Figma-Matched OdoTrack Logo
-                  const OdoTrackLogo(size: 140),
+                  // Official Figma-Matched OdoTrack Logo
+                  const OdoTrackLogo(size: 180),
 
                   const SizedBox(height: 36),
 
