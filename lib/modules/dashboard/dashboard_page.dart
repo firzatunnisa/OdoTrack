@@ -1,0 +1,499 @@
+import 'package:flutter/material.dart';
+import 'models/reminder_model.dart';
+import 'widgets/active_vehicle_card.dart';
+import 'widgets/quick_action_button.dart';
+import 'widgets/reminder_summary_card.dart';
+import 'widgets/service_history_card.dart';
+import 'reminder_page.dart';
+import '../vehicle/vehicle_list_page.dart';
+import '../vehicle/add_vehicle_page.dart';
+import '../service/service_history_page.dart';
+import '../service/add_service_page.dart';
+import '../profile/profile_page.dart';
+import '../main_screen.dart';
+import '../../theme/app_colors.dart';
+import '../../widgets/app_bottom_nav_bar.dart';
+
+class DashboardPage extends StatefulWidget {
+  final bool isEmbedded;
+  const DashboardPage({super.key, this.isEmbedded = false});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  int _selectedBottomIndex = 0;
+
+  // Active Vehicle State
+  VehicleSummary _activeVehicle = const VehicleSummary(
+    id: 'v1',
+    name: 'Honda Scoopy',
+    plateNumber: 'BA 4321 KZ',
+    currentKm: 12450,
+    type: 'Matic',
+    lastServiceDate: '12 Agu 2026 (10.000 KM)',
+  );
+
+  // Reminders list (matching Figma)
+  final List<ReminderModel> _reminders = [
+    const ReminderModel(
+      id: '1',
+      title: 'Servis Berkala',
+      category: 'service',
+      vehicleName: 'Honda Scoopy',
+      targetKm: 15000,
+      currentKm: 12450,
+      status: 'warning',
+      description: 'Dalam 2.550 km',
+      isEnabled: true,
+    ),
+    ReminderModel(
+      id: '2',
+      title: 'Pajak Kendaraan',
+      category: 'tax',
+      vehicleName: 'Honda Scoopy',
+      dueDate: DateTime(2026, 11, 12),
+      status: 'safe',
+      description: '12 Nov 2026',
+      isEnabled: true,
+    ),
+    const ReminderModel(
+      id: '3',
+      title: 'Ganti Oli',
+      category: 'oil',
+      vehicleName: 'Honda Scoopy',
+      targetKm: 13000,
+      currentKm: 12450,
+      status: 'critical',
+      description: 'Dalam 550 km',
+      isEnabled: true,
+    ),
+  ];
+
+  void _showUpdateKmDialog() {
+    final controller =
+        TextEditingController(text: _activeVehicle.currentKm.toString());
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Update Kilometer'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Masukkan angka odometer terbaru di speedometer motor Anda:',
+              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+            ),
+            const SizedBox(height: 14),
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              autofocus: true,
+              decoration: InputDecoration(
+                labelText: 'Kilometer Sekarang',
+                suffixText: 'KM',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                prefixIcon: const Icon(Icons.speed),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+            onPressed: () {
+              final newKm = int.tryParse(
+                  controller.text.replaceAll(RegExp(r'[^0-9]'), ''));
+              if (newKm != null && newKm >= _activeVehicle.currentKm) {
+                setState(() {
+                  _activeVehicle = VehicleSummary(
+                    id: _activeVehicle.id,
+                    name: _activeVehicle.name,
+                    plateNumber: _activeVehicle.plateNumber,
+                    currentKm: newKm,
+                    type: _activeVehicle.type,
+                    lastServiceDate: _activeVehicle.lastServiceDate,
+                  );
+                });
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'Kilometer berhasil diupdate menjadi $newKm KM!'),
+                    backgroundColor: AppColors.success,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                        'Kilometer baru tidak boleh lebih kecil dari sebelumnya.'),
+                    backgroundColor: Colors.red,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
+            child: const Text('Simpan'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSwitchVehicleModal() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Pilih Kendaraan Aktif',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 14),
+            ListTile(
+              leading: const CircleAvatar(
+                backgroundColor: AppColors.primary,
+                child: Icon(Icons.two_wheeler, color: Colors.white),
+              ),
+              title: const Text('Honda Scoopy',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: const Text('BA 4321 KZ • 12.450 KM'),
+              trailing:
+                  const Icon(Icons.check_circle, color: Color(0xFF16A34A)),
+              onTap: () => Navigator.pop(ctx),
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.grey.shade300,
+                child: const Icon(Icons.two_wheeler, color: Colors.grey),
+              ),
+              title: const Text('Yamaha NMAX 155',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: const Text('B 1234 ABC • 28.500 KM'),
+              onTap: () {
+                setState(() {
+                  _activeVehicle = const VehicleSummary(
+                    id: 'v2',
+                    name: 'Yamaha NMAX 155',
+                    plateNumber: 'B 1234 ABC',
+                    currentKm: 28500,
+                    type: 'Matic',
+                    lastServiceDate: '01 Agu 2026 (26.000 KM)',
+                  );
+                });
+                Navigator.pop(ctx);
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.add_circle_outline,
+                  color: AppColors.primary),
+              title: const Text('Tambah Kendaraan Lain',
+                  style: TextStyle(
+                      color: AppColors.primary, fontWeight: FontWeight.bold)),
+              onTap: () {
+                Navigator.pop(ctx);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddVehiclePage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.primaryLight,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // ─── Header ───────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Text
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Halo, Nadila 👋',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Yuk, cek kondisi dan jadwal servis motor.',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Profile circle
+                  GestureDetector(
+                    onTap: () {
+                      if (widget.isEmbedded) {
+                        MainScreen.switchTab(context, 3);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ProfilePage()),
+                        );
+                      }
+                    },
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'N',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // ─── Scrollable Body ───────────────────────────────────
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 1. Active Vehicle Card
+                    ActiveVehicleCard(
+                      vehicle: _activeVehicle,
+                      onUpdateOdo: _showUpdateKmDialog,
+                      onSwitchVehicle: _showSwitchVehicleModal,
+                    ),
+                    const SizedBox(height: 20),
+
+                    // 2. Aksi Cepat
+                    const Text(
+                      'Aksi Cepat',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: QuickActionButton(
+                            icon: Icons.two_wheeler,
+                            label: 'Detail\nKendaraan',
+                            backgroundColor: const Color(0xFFD8B4FE),
+                            iconColor: const Color(0xFF6D28D9),
+                            onTap: () {
+                              if (widget.isEmbedded) {
+                                MainScreen.switchTab(context, 1);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const VehicleListPage()),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: QuickActionButton(
+                            icon: Icons.construction_outlined,
+                            label: 'Servis',
+                            backgroundColor: const Color(0xFFBBF7D0),
+                            iconColor: const Color(0xFF15803D),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const AddServicePage()),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // 3. Pengingat Servis
+                    const Text(
+                      'Pengingat Servis',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ..._reminders.map(
+                      (r) => ReminderSummaryCard(
+                        reminder: r,
+                        onTap: () {
+                          if (widget.isEmbedded) {
+                            MainScreen.switchTab(context, 2);
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const ReminderPage()),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // 4. Riwayat Servis Terbaru
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Riwayat Servis Terbaru',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const ServiceHistoryPage()),
+                            );
+                          },
+                          child: const Text(
+                            'Lihat Semua',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    ServiceHistoryCard(
+                      serviceType: 'Servis Ringan',
+                      date: '12 Agu 2026',
+                      cost: 'Rp250.000',
+                      icon: Icons.build_circle_outlined,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ServiceHistoryPage()),
+                        );
+                      },
+                    ),
+                    ServiceHistoryCard(
+                      serviceType: 'Ganti Oli + Filter',
+                      date: '15 Mei 2026',
+                      cost: 'Rp180.000',
+                      icon: Icons.opacity_outlined,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ServiceHistoryPage()),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      // ─── Bottom Navigation ─────────────────────────────────────
+      bottomNavigationBar: widget.isEmbedded
+          ? null
+          : AppBottomNavBar(
+              currentIndex: _selectedBottomIndex,
+              onTap: (idx) {
+                setState(() => _selectedBottomIndex = idx);
+                if (idx == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const VehicleListPage()),
+                  ).then((_) {
+                    if (mounted) setState(() => _selectedBottomIndex = 0);
+                  });
+                } else if (idx == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReminderPage()),
+                  ).then((_) {
+                    if (mounted) setState(() => _selectedBottomIndex = 0);
+                  });
+                } else if (idx == 3) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ProfilePage()),
+                  ).then((_) {
+                    if (mounted) setState(() => _selectedBottomIndex = 0);
+                  });
+                }
+              },
+            ),
+    );
+  }
+}
