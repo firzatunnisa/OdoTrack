@@ -4,9 +4,13 @@ import '../auth/landing_page.dart';
 import '../vehicle/vehicle_list_page.dart';
 import '../dashboard/nearby_locations_page.dart';
 import '../dashboard/reminder_page.dart';
+import '../main_screen.dart';
+import '../../theme/app_colors.dart';
+import '../../widgets/app_bottom_nav_bar.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final bool isEmbedded;
+  const ProfilePage({super.key, this.isEmbedded = false});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -299,7 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   bottom: 60,
                 ),
                 decoration: const BoxDecoration(
-                  color: Color(0xFF4F46E5),
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(28),
                   ),
@@ -432,12 +436,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     iconColor: const Color(0xFF7C3AED),
                     title: 'Data Kendaraan Saya',
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const VehicleListPage(),
-                        ),
-                      );
+                      if (widget.isEmbedded) {
+                        MainScreen.switchTab(context, 1);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const VehicleListPage(),
+                          ),
+                        );
+                      }
                     },
                   ),
                   const SizedBox(height: 12),
@@ -511,62 +519,26 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
 
       // ─── Bottom Navigation Bar ─────────────────────────────────
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Color(0xFFE5E7EB))),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: 3,
-          selectedItemColor: const Color(0xFF4F46E5),
-          unselectedItemColor: Colors.grey.shade500,
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-          selectedLabelStyle: const TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
-          ),
-          unselectedLabelStyle: const TextStyle(fontSize: 11),
-          onTap: (idx) {
-            if (idx == 0) {
-              Navigator.pop(context);
-            } else if (idx == 1) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const VehicleListPage()),
-              );
-            } else if (idx == 2) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const ReminderPage()),
-              );
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Beranda',
+      bottomNavigationBar: widget.isEmbedded
+          ? null
+          : AppBottomNavBar(
+              currentIndex: 3,
+              onTap: (idx) {
+                if (idx == 0) {
+                  Navigator.pop(context);
+                } else if (idx == 1) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const VehicleListPage()),
+                  );
+                } else if (idx == 2) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReminderPage()),
+                  );
+                }
+              },
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.two_wheeler_outlined),
-              activeIcon: Icon(Icons.two_wheeler),
-              label: 'Kendaraan',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_outlined),
-              activeIcon: Icon(Icons.notifications),
-              label: 'Pengingat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Akun',
-            ),
-          ],
-        ),
-      ),
     );
   }
 

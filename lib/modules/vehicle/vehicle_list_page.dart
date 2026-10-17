@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:odotrack/modules/vehicle/add_vehicle_page.dart';
 import 'package:odotrack/modules/vehicle/vehicle_detail_page.dart';
-import 'package:odotrack/modules/service/service_history_page.dart';
+import 'package:odotrack/modules/dashboard/reminder_page.dart';
 import 'package:odotrack/modules/profile/profile_page.dart';
+import 'package:odotrack/theme/app_colors.dart';
+import 'package:odotrack/widgets/app_bottom_nav_bar.dart';
 
 class VehicleListPage extends StatefulWidget {
-  const VehicleListPage({super.key});
+  final bool isEmbedded;
+  const VehicleListPage({super.key, this.isEmbedded = false});
 
   @override
   State<VehicleListPage> createState() => _VehicleListPageState();
@@ -46,8 +49,9 @@ class _VehicleListPageState extends State<VehicleListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF6C4DFF),
+        backgroundColor: AppColors.primary,
         elevation: 0,
+        automaticallyImplyLeading: !widget.isEmbedded,
         title: const Text(
           'Daftar Kendaraan',
           style: TextStyle(
@@ -159,54 +163,30 @@ class _VehicleListPageState extends State<VehicleListPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // 'Kendaraan' is selected
-        selectedItemColor: const Color(0xFF6C4DFF),
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pop(context); // Kembali ke Beranda (Dashboard)
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ServiceHistoryPage(),
-              ),
-            );
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
-              ),
-            );
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.two_wheeler_outlined),
-            activeIcon: Icon(Icons.two_wheeler),
-            label: 'Kendaraan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.build_outlined),
-            activeIcon: Icon(Icons.build),
-            label: 'Servis',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Akun',
-          ),
-        ],
-      ),
+      bottomNavigationBar: widget.isEmbedded
+          ? null
+          : AppBottomNavBar(
+              currentIndex: 1,
+              onTap: (index) {
+                if (index == 0) {
+                  Navigator.pop(context);
+                } else if (index == 2) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReminderPage(),
+                    ),
+                  );
+                } else if (index == 3) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
+                }
+              },
+            ),
     );
   }
 

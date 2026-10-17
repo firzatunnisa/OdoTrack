@@ -3,9 +3,14 @@ import 'models/reminder_model.dart';
 import 'widgets/reminder_item_card.dart';
 import 'widgets/add_reminder_sheet.dart';
 import 'nearby_locations_page.dart';
+import '../vehicle/vehicle_list_page.dart';
+import '../profile/profile_page.dart';
+import '../../theme/app_colors.dart';
+import '../../widgets/app_bottom_nav_bar.dart';
 
 class ReminderPage extends StatefulWidget {
-  const ReminderPage({super.key});
+  final bool isEmbedded;
+  const ReminderPage({super.key, this.isEmbedded = false});
 
   @override
   State<ReminderPage> createState() => _ReminderPageState();
@@ -370,8 +375,9 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
           'Jadwal & Pengingat',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        backgroundColor: const Color(0xFF5B50E5),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
+        automaticallyImplyLeading: !widget.isEmbedded,
         elevation: 0,
         actions: [
           IconButton(
@@ -451,11 +457,35 @@ class _ReminderPageState extends State<ReminderPage> with SingleTickerProviderSt
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddSheet,
-        backgroundColor: const Color(0xFF5B50E5),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.notification_add_outlined),
         label: const Text('Buat Pengingat'),
       ),
+      bottomNavigationBar: widget.isEmbedded
+          ? null
+          : AppBottomNavBar(
+              currentIndex: 2,
+              onTap: (index) {
+                if (index == 0) {
+                  Navigator.pop(context);
+                } else if (index == 1) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const VehicleListPage(),
+                    ),
+                  );
+                } else if (index == 3) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
+                }
+              },
+            ),
     );
   }
 

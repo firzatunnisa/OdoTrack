@@ -10,9 +10,13 @@ import '../vehicle/add_vehicle_page.dart';
 import '../service/service_history_page.dart';
 import '../service/add_service_page.dart';
 import '../profile/profile_page.dart';
+import '../main_screen.dart';
+import '../../theme/app_colors.dart';
+import '../../widgets/app_bottom_nav_bar.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  final bool isEmbedded;
+  const DashboardPage({super.key, this.isEmbedded = false});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -265,16 +269,20 @@ class _DashboardPageState extends State<DashboardPage> {
                   // Profile circle
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const ProfilePage()),
-                      );
+                      if (widget.isEmbedded) {
+                        MainScreen.switchTab(context, 3);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ProfilePage()),
+                        );
+                      }
                     },
                     child: Container(
                       width: 44,
                       height: 44,
                       decoration: const BoxDecoration(
-                        color: Color(0xFF6C4DFF),
+                        color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
                       child: const Center(
@@ -328,11 +336,15 @@ class _DashboardPageState extends State<DashboardPage> {
                             backgroundColor: const Color(0xFFD8B4FE),
                             iconColor: const Color(0xFF6D28D9),
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const VehicleListPage()),
-                              );
+                              if (widget.isEmbedded) {
+                                MainScreen.switchTab(context, 1);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const VehicleListPage()),
+                                );
+                              }
                             },
                           ),
                         ),
@@ -370,11 +382,15 @@ class _DashboardPageState extends State<DashboardPage> {
                       (r) => ReminderSummaryCard(
                         reminder: r,
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const ReminderPage()),
-                          );
+                          if (widget.isEmbedded) {
+                            MainScreen.switchTab(context, 2);
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const ReminderPage()),
+                            );
+                          }
                         },
                       ),
                     ),
@@ -448,72 +464,36 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
 
       // ─── Bottom Navigation ─────────────────────────────────────
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Color(0xFFE5E7EB))),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedBottomIndex,
-          selectedItemColor: const Color(0xFF5B50E5),
-          unselectedItemColor: Colors.grey.shade500,
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-          selectedLabelStyle: const TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
-          ),
-          unselectedLabelStyle: const TextStyle(fontSize: 11),
-          onTap: (idx) {
-            setState(() => _selectedBottomIndex = idx);
-            if (idx == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const VehicleListPage()),
-              ).then((_) {
-                if (mounted) setState(() => _selectedBottomIndex = 0);
-              });
-            } else if (idx == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ReminderPage()),
-              ).then((_) {
-                if (mounted) setState(() => _selectedBottomIndex = 0);
-              });
-            } else if (idx == 3) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfilePage()),
-              ).then((_) {
-                if (mounted) setState(() => _selectedBottomIndex = 0);
-              });
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Beranda',
+      bottomNavigationBar: widget.isEmbedded
+          ? null
+          : AppBottomNavBar(
+              currentIndex: _selectedBottomIndex,
+              onTap: (idx) {
+                setState(() => _selectedBottomIndex = idx);
+                if (idx == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const VehicleListPage()),
+                  ).then((_) {
+                    if (mounted) setState(() => _selectedBottomIndex = 0);
+                  });
+                } else if (idx == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReminderPage()),
+                  ).then((_) {
+                    if (mounted) setState(() => _selectedBottomIndex = 0);
+                  });
+                } else if (idx == 3) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ProfilePage()),
+                  ).then((_) {
+                    if (mounted) setState(() => _selectedBottomIndex = 0);
+                  });
+                }
+              },
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.two_wheeler_outlined),
-              activeIcon: Icon(Icons.two_wheeler),
-              label: 'Kendaraan',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_outlined),
-              activeIcon: Icon(Icons.notifications),
-              label: 'Pengingat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Akun',
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

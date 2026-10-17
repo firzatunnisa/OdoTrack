@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:odotrack/modules/dashboard/dashboard_page.dart';
+import 'package:odotrack/modules/main_screen.dart';
 import 'widgets/google_sign_in_sheet.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_formKey.currentState!.validate()) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardPage()),
+        MaterialPageRoute(builder: (context) => const MainScreen()),
         (route) => false,
       );
       ScaffoldMessenger.of(context).showSnackBar(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:odotrack/modules/dashboard/dashboard_page.dart';
+import 'package:odotrack/modules/main_screen.dart';
 
 class GoogleSignInSheet extends StatelessWidget {
   final VoidCallback? onSuccess;
@@ -130,7 +130,7 @@ class GoogleSignInSheet extends StatelessWidget {
                 Navigator.pop(context); // close sheet
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const DashboardPage()),
+                  MaterialPageRoute(builder: (context) => const MainScreen()),
                   (route) => false,
                 );
                 ScaffoldMessenger.of(context).showSnackBar(
