@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:odotrack/modules/vehicle/add_vehicle_page.dart';
 import 'package:odotrack/modules/vehicle/vehicle_detail_page.dart';
 import 'package:odotrack/modules/service/service_history_page.dart';
+import 'package:odotrack/modules/profile/profile_page.dart';
 
 class VehicleListPage extends StatefulWidget {
   const VehicleListPage({super.key});
@@ -124,6 +125,13 @@ class _VehicleListPageState extends State<VehicleListPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => const ServiceHistoryPage(),
+              ),
+            );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProfilePage(),
               ),
             );
           }

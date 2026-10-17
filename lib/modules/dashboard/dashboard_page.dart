@@ -10,6 +10,7 @@ import '../vehicle/add_vehicle_page.dart';
 import '../service/service_history_page.dart';
 import '../service/add_service_page.dart';
 import '../auth/landing_page.dart';
+import '../profile/profile_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -323,12 +324,17 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   // Profile circle
                   GestureDetector(
-                    onTap: _showProfileModal,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ProfilePage()),
+                      );
+                    },
                     child: Container(
                       width: 44,
                       height: 44,
                       decoration: const BoxDecoration(
-                        color: Color(0xFF5B50E5),
+                        color: Color(0xFF6C4DFF),
                         shape: BoxShape.circle,
                       ),
                       child: const Center(
@@ -525,14 +531,23 @@ class _DashboardPageState extends State<DashboardPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const VehicleListPage()),
-              );
+              ).then((_) {
+                if (mounted) setState(() => _selectedBottomIndex = 0);
+              });
             } else if (idx == 2) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ReminderPage()),
-              );
+              ).then((_) {
+                if (mounted) setState(() => _selectedBottomIndex = 0);
+              });
             } else if (idx == 3) {
-              _showProfileModal();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              ).then((_) {
+                if (mounted) setState(() => _selectedBottomIndex = 0);
+              });
             }
           },
           items: const [
